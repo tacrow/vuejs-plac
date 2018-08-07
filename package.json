@@ -1,0 +1,21 @@
+{
+  "name": "vuejs-plac",
+  "version": "1.0.0",
+  "description": "vuejs",
+  "main": "index.js",
+  "repository": "git@github.com:tacrow/vuejs-plac.git",
+  "author": "tacrow",
+  "license": "MIT",
+  "scripts": {
+    "watch": "babel src/js/main.js --out-file src/bundle/js/app.js -w"
+  },
+  "dependencies": {
+    "vue": "^2.5.16"
+  },
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-latest": "^6.24.1",
+    "lodash": "^4.17.10"
+  }
+}

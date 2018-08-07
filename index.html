@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <title>vuejs-plac</title>
+        <style>
+        #app {
+            position: relative;
+        }
+        .btnScrollTop {
+            position: fixed;
+            right: 50px;
+            bottom: 50px;
+            padding: 10px 15px;
+            background-color: #666;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1;
+            cursor: pointer;
+        }
+        .v-enter-active, .v-leave-active {
+            transition: opacity 1s;
+        }
+        .v-enter, .v-leave-to {
+            opacity: 0;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <h1>Vue.js Plac</h1>
+
+            <header :class="{compact: scrollY > 200}">
+                200pxより下にスクロールしたら.compactを付与
+            </header>
+
+            <p>{{ message }}</p>
+
+            <input type="text" v-model="message">
+            <ul>
+                <li v-for="item in lists">{{ item }}</li>
+            </ul>
+
+            <button @click="show = !show">ボタン</button>
+            <transition name="v">
+                <p v-if="show">Vue.js Transition Animation.</p>
+            </transition>
+
+            <div v-if="show">テスト v-if</div>
+            <div v-show="show">テスト v-show</div>
+
+            <h2>会社リスト</h2>
+            <input type="text" v-model="name" placeholder="Company Name">
+            <button @click="addCompany">追加</button>
+            <ul>
+                <li v-for="(item, index) in listCyberAgent"
+                    :key="item.id"
+                    :class="{is_parent : item.num >= 2000}">id: {{ item.id }}, name: {{ item.name }}, num: {{ item.num }} <button @click="removeCompany(index)">削除</button>
+                </li>
+            </ul>
+
+            <h2>画像表示</h2>
+            <input type="file" v-on:change="handleChangeImage">
+            <div v-if="preview">
+                <img v-bind:src="preview">
+            </div>
+
+            <h2>Range</h2>
+            <input type="range" v-model.number="val">
+            <p>{{ val }}</p>
+
+            <h2>算出プロパティ</h2>
+            <p>X: {{ halfPoint.x }}</p>
+            <p>Y: {{ halfPoint.y }}</p>
+
+            <h2>算出プロパティ: get set</h2>
+            <input type="text" v-model.number="width">
+            <p>{{ width }}</p>
+            <input type="text" v-model.number="halfWidthGetSet">
+            <p>{{ halfWidthGetSet }}</p>
+
+            <!-- <h2>算出プロパティ: キャッシュ機能</h2>
+            <h3>computed</h3>
+            <ul>
+                <li>{{ computedData }}</li>
+                <li>{{ computedData }}</li>
+            </ul>
+            <h3>methods</h3>
+            <ul>
+                <li>{{ methodsData() }}</li>
+                <li>{{ methodsData() }}</li>
+            </ul> -->
+
+            <h2>算出プロパティ: リスト絞り込み</h2>
+            <input type="text" v-model.number="budget">円以下に絞り込む
+            <input type="text" v-model.number="limit">件を表示
+            <button @click="order=!order">切り替え</button>
+            <p>{{ matched.length }}件中 {{ limited.length }}件を表示</p>
+            <ul>
+                <li v-for="item in limited" :key="item.id">{{ item.name }} {{ item.price }}</li>
+            </ul>
+
+            <h2>フォームを監視してAPIからデータを取得</h2>
+            <select v-model="current">
+                <option v-for="topic in topics" :value="topic.value">{{ topic.name }}</option>
+            </select>
+            <ul>
+                <li v-for="item in list">{{ item.full_name }}</li>
+            </ul>
+
+            <div class="btnScrollTop" @click="scrollTop">ページTOPへ</div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@0.17.1/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/smooth-scroll@12.1.5"></script>
+        <script src="src/js/main.js"></script>
+    </body>
+</html>

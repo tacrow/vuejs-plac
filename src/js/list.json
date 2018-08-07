@@ -1,0 +1,5 @@
+[
+  { id: 0, name: 'CyberAgent', num: 2000 },
+  { id: 1, name: 'AbemaTV', num: 500 },
+  { id: 2, name: 'CyberOwl', num: 100 }
+]
