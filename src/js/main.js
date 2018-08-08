@@ -2,6 +2,39 @@
 
 const scroll = new SmoothScroll()
 
+Vue.component('comp-child', {
+  // テンプレートで受け取ったvalを使用
+  template: '<li>Name: {{ name }}, HP: {{ hp }}</li>',
+  // 受け取る属性名を指定
+  props: ['name', 'hp']
+})
+
+Vue.component('comp-child-event', {
+  template: '<div @click="handleClickEmit">クリック</div>',
+  methods: {
+    handleClickEmit: function() {
+      // ボタンをクリックでchilds-eventを発火させる
+      this.$emit('childs-event')
+    }
+  }
+})
+
+Vue.component('comp-child-list', {
+  // テンプレートで受け取ったvalを使用
+  template: '<li>Id: {{ id }}, Name: {{ name }}, HP: {{ hp }}\<button @click="doAttack">HP減</button></li>',
+  // 受け取る属性名を指定
+  props: {
+    id: Number,
+    name: String,
+    hp: Number
+  },
+  methods: {
+    doAttack: function() {
+      this.$emit('attack', this.id)
+    }
+  }
+})
+
 const app = new Vue({
   el: '#app',
   data: {
@@ -42,6 +75,18 @@ const app = new Vue({
       { value: 'angular', name: 'Angular' },
       { value: 'backbone', name: 'Backbone.js' },
       { value: 'jQuery', name: 'jQuery' }
+    ],
+    // valueA: 'これは子A',
+    // valueB: 'これは子B'
+    complist1: [
+      { id: 0, name: 'CyberAgent', hp: 1000 },
+      { id: 1, name: 'AbemaTV', hp: 700 },
+      { id: 2, name: 'AWA', hp: 500 }
+    ],
+    complist2: [
+      { id: 0, name: 'CyberAgent', hp: 1000 },
+      { id: 1, name: 'AbemaTV', hp: 700 },
+      { id: 2, name: 'AWA', hp: 500 }
     ]
   },
   created: function() {
@@ -129,6 +174,18 @@ const app = new Vue({
       scroll.animateScroll(0)
     },
     // methodsData: function() { return Math.random() }
+
+    // 子からのイベントが発生
+    parentMethod: function() {
+      console.log('子からのイベントを検知')
+    },
+
+    handleAttack: function(id) {
+      const item = this.complist2.find((el) => {
+        return el.id === id
+      })
+      if(item !== undefined && item.hp > 0) item.hp -= 10
+    }
   },
   // ワッチ
   watch: {
@@ -141,6 +198,15 @@ const app = new Vue({
       }).then(function(response) {
         this.list = response.data.items
       }.bind(this))
+    },
+    list: function() {
+      // DOM更新後にulの高さは取得できない
+      console.log('通常: ', this.$refs.list.offsetHeight)
+
+      // nextTickを利用すると、DOM更新後のulの高さが取得できる
+      this.$nextTick(function() {
+        console.log('通常: ', this.$refs.list.offsetHeight)
+      })
     }
   }
 })

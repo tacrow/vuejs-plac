@@ -109,8 +109,30 @@
             <select v-model="current">
                 <option v-for="topic in topics" :value="topic.value">{{ topic.name }}</option>
             </select>
-            <ul>
+            <ul ref="list">
                 <li v-for="item in list">{{ item.full_name }}</li>
+            </ul>
+
+            <h2>コンポーネントでリストを表示（データの流れ：親>子）</h2>
+            <ul>
+                <comp-child v-for="item in complist1"
+                            :key="item.id"
+                            :name="item.name"
+                            :hp="item.hp"
+                            class="item"></comp-child>
+            </ul>
+
+            <h2>コンポーネント（データの流れ：子>親）</h2>
+            <div>
+                <comp-child-event v-on:childs-event="parentMethod"></comp-child-event>
+            </div>
+
+            <h2>コンポーネント 親が持つデータを操作（データの流れ：子>親）</h2>
+            <ul>
+                <comp-child-list v-for="item in complist2"
+                                 :key="item.id"
+                                 v-bind="item"
+                                 @attack="handleAttack"></comp-child-list>
             </ul>
 
             <div class="btnScrollTop" @click="scrollTop">ページTOPへ</div>
